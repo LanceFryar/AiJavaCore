@@ -10,8 +10,8 @@ public abstract class Search {
 
     private List<State> visitedStates;
     private Enviroment enviroment;
-    private State currentState;
-    private final State finalState;
+    protected State currentState;
+    protected final State finalState;
     private long initTime;
     private long endTime;
 
@@ -22,7 +22,7 @@ public abstract class Search {
         this.visitedStates = new ArrayList<>();
     }
 
-    public State searchFinalState() {
+    protected State searchFinalState() {
         setStartTime();
         while (!currentState.equals(finalState)) {
             updateQueueList(getChilds(currentState));
@@ -33,13 +33,13 @@ public abstract class Search {
         return currentState;
     }
 
-    private void setStartTime() {
+    protected void setStartTime() {
         this.initTime = System.currentTimeMillis();
     }
 
     protected abstract void updateQueueList(List<State> childs);
 
-    private List<State> getChilds(State currentState) {
+    protected List<State> getChilds(State currentState) {
         List<State> childs = new ArrayList<>();
         for (Iterator it = enviroment.getApplicableActions(currentState).iterator(); it.hasNext();) {
             Action applicableAction = (Action) it.next();
@@ -49,13 +49,13 @@ public abstract class Search {
         return childs;
     }
 
-    private void markStateAsVisited(State currentState) {
+    protected void markStateAsVisited(State currentState) {
         visitedStates.add(currentState);
     }
 
     protected abstract void updateCurrentState();
 
-    private void setFinishTime() {
+    protected void setFinishTime() {
         this.endTime = System.currentTimeMillis();
     }
 
@@ -95,7 +95,7 @@ public abstract class Search {
 
     protected abstract double getMaxOpenListSize();
 
-    private double getPathSize(State currentState) {
+    protected double getPathSize(State currentState) {
         double sizeCounter = 0;
         State nextState = currentState;
         while ((nextState = nextState.getParent()) != null)
